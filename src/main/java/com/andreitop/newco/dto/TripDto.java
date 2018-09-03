@@ -2,7 +2,7 @@ package com.andreitop.newco.dto;
 
 import java.io.Serializable;
 
-public class TripDto implements Serializable {
+public class TripDto implements TripEntity, Serializable {
 
     private static final long serialVersionUID = 5914366185889783660L;
 

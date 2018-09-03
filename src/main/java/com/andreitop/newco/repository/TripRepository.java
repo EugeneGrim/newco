@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TripRepository  {
+public class TripRepository implements SimpleRepository<TripDto> {
 
     private final List<TripDto> trips = new ArrayList<>();
 
