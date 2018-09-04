@@ -1,12 +1,12 @@
 package com.andreitop.newco.repository;
 
-import com.andreitop.newco.dto.TripDto;
+import com.andreitop.newco.dto.TripEntity;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TripRepository<E extends TripDto> implements SimpleRepository<E> {
+public class TripRepository<E extends TripEntity> implements SimpleRepository<E> {
 
     private final List<E> trips = new ArrayList<>();
 

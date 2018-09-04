@@ -1,7 +1,7 @@
 package com.andreitop.newco.controller;
 
 import com.andreitop.newco.common.ApiConstant;
-import com.andreitop.newco.dto.TripDto;
+import com.andreitop.newco.dto.TripEntity;
 import com.andreitop.newco.repository.TripRepository;
 import com.andreitop.newco.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiConstant.API_V_1 + "/trips")
-public class TripsController<E extends TripDto, R extends TripRepository<E>, S extends TripService<E, R>>
+public class TripsController<E extends TripEntity, R extends TripRepository<E>, S extends TripService<E, R>>
         implements SimpleController<E> {
 
     private final S tripService;
