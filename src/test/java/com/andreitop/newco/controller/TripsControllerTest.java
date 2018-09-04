@@ -15,8 +15,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,12 +27,20 @@ public class TripsControllerTest {
     private static final String TRIP_JSON = "{\"origin\": \"LED\" , \"destination\":\"MOW\", \"price\" : 12256}";
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
     private static final String API_URL = ApiConstant.API_V_1 + "/trips";
+    private static final TripDto TRIP_DTO = new TripDto();
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private TripService tripService;
+
+    public TripsControllerTest() {
+        TRIP_DTO.setId(1L);
+        TRIP_DTO.setOrigin("MOW");
+        TRIP_DTO.setDestination("LED");
+        TRIP_DTO.setPrice(4232);
+    }
 
     @Test
     public void whenPostTrip_thenCreateTrip() throws Exception {
@@ -45,23 +52,43 @@ public class TripsControllerTest {
 
     @Test
     public void givenTrips_whenGetTrips_thenReturnJsonArray() throws Exception {
-
-        TripDto tripDto = new TripDto();
-        tripDto.setId(1L);
-        tripDto.setOrigin("MOW");
-        tripDto.setDestination("LED");
-        tripDto.setPrice(4232);
-
-        List<TripDto> allTrips = Collections.singletonList(tripDto);
+        List<TripDto> allTrips = Collections.singletonList(TRIP_DTO);
         given(tripService.findAll()).willReturn(allTrips);
 
         mockMvc.perform(get(API_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(CONTENT_TYPE))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].origin", is("MOW")))
-                .andExpect(jsonPath("$[0].destination", is("LED")))
-                .andExpect(jsonPath("$[0].price", is(4232)));
+                .andExpect(jsonPath("$[0].id", is(TRIP_DTO.getId().intValue())))
+                .andExpect(jsonPath("$[0].origin", is(TRIP_DTO.getOrigin())))
+                .andExpect(jsonPath("$[0].destination", is(TRIP_DTO.getDestination())))
+                .andExpect(jsonPath("$[0].price", is(TRIP_DTO.getPrice())));
+    }
+
+    @Test
+    public void givenTripById_whenGetTripById_thenReturnJsonArray() throws Exception {
+        given(tripService.findById(TRIP_DTO.getId())).willReturn(TRIP_DTO);
+
+        mockMvc.perform(get(API_URL + "/" + TRIP_DTO.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(CONTENT_TYPE))
+                .andExpect(jsonPath("$.id", is(TRIP_DTO.getId().intValue())))
+                .andExpect(jsonPath("$.origin", is(TRIP_DTO.getOrigin())))
+                .andExpect(jsonPath("$.destination", is(TRIP_DTO.getDestination())))
+                .andExpect(jsonPath("$.price", is(TRIP_DTO.getPrice())));
+    }
+
+    @Test
+    public void deleteTripById_whenDeleteTrip_thenReturnNoContentStatus() throws Exception {
+        mockMvc.perform(delete(API_URL + "/" + TRIP_DTO.getId()))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void updateTripById_whenUpdateTripById_thenReturnOkStatus() throws Exception {
+        mockMvc.perform(put(API_URL)
+                .contentType(CONTENT_TYPE)
+                .content(TRIP_JSON))
+                .andExpect(status().isOk());
     }
 }
