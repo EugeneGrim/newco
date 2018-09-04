@@ -1,6 +1,8 @@
 package com.andreitop.newco.dto;
 
-public interface TripEntity {
+import java.io.Serializable;
+
+public interface TripEntity extends Serializable {
 
     Long getId();
 

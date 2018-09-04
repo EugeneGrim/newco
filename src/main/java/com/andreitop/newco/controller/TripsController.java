@@ -2,6 +2,7 @@ package com.andreitop.newco.controller;
 
 import com.andreitop.newco.common.ApiConstant;
 import com.andreitop.newco.dto.TripDto;
+import com.andreitop.newco.repository.TripRepository;
 import com.andreitop.newco.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,30 +21,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiConstant.API_V_1 + "/trips")
-public class TripsController implements SimpleController<TripDto> {
+public class TripsController<E extends TripDto, R extends TripRepository<E>, S extends TripService<E, R>>
+        implements SimpleController<E> {
 
-    private final TripService tripService;
+    private final S tripService;
 
     @Autowired
-    public TripsController(TripService tripService) {
+    public TripsController(S tripService) {
         this.tripService = tripService;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TripDto> findAll() {
+    public List<E> findAll() {
         return tripService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripDto findById(@PathVariable("id") final Long id) {
+    public E findById(@PathVariable("id") final Long id) {
         return tripService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid final TripDto trip) {
+    public void create(@RequestBody @Valid final E trip) {
         tripService.save(trip);
     }
 
@@ -55,8 +57,7 @@ public class TripsController implements SimpleController<TripDto> {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody @Valid final TripDto newTrip) {
+    public void update(@RequestBody @Valid final E newTrip) {
         tripService.update(newTrip);
     }
-
 }

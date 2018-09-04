@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TripRepository implements SimpleRepository<TripDto> {
+public class TripRepository<E extends TripDto> implements SimpleRepository<E> {
 
-    private final List<TripDto> trips = new ArrayList<>();
+    private final List<E> trips = new ArrayList<>();
 
-    public List<TripDto> findAll() {
+    public List<E> findAll() {
         return trips;
     }
 
-    public TripDto findById(final Long id) {
+    public E findById(final Long id) {
         return trips.stream()
                 .filter(t -> t.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void save(final TripDto trip) {
+    public void save(final E trip) {
         trip.setId((long) (trips.size() + 1));
         trips.add(trip);
     }
@@ -33,7 +33,7 @@ public class TripRepository implements SimpleRepository<TripDto> {
                 .ifPresent(trips::remove);
     }
 
-    public void update(final TripDto newTrip) {
+    public void update(final E newTrip) {
         trips.stream()
                 .filter(t -> t.getId().equals(newTrip.getId()))
                 .findFirst()
