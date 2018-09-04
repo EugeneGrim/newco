@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,7 +43,7 @@ public class TripsController implements SimpleController<TripDto> {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody final TripDto trip) {
+    public void create(@RequestBody @Valid final TripDto trip) {
         tripService.save(trip);
     }
 
@@ -53,7 +55,7 @@ public class TripsController implements SimpleController<TripDto> {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody final TripDto newTrip) {
+    public void update(@RequestBody @Valid final TripDto newTrip) {
         tripService.update(newTrip);
     }
 

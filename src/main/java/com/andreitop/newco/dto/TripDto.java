@@ -11,7 +11,6 @@ public class TripDto implements TripEntity, Serializable {
 
     private static final long serialVersionUID = 5914366185889783660L;
 
-    @NotNull
     private Long id;
     @NotBlank
     @Size(min = 3, message = "Length of the origin's airport name must be more than 3 symbols")
