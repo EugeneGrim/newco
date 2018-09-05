@@ -1,5 +1,6 @@
 package com.andreitop.newco.service;
 
+import com.andreitop.newco.dto.TripDto;
 import com.andreitop.newco.dto.TripEntity;
 import com.andreitop.newco.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TripService<E extends TripEntity, R extends TripRepository<E>> implements SimpleService<E>{
+public class TripService<E extends TripDto, R extends TripRepository<E>> implements SimpleService<E>{
 
     private final R tripRepository;
 
