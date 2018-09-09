@@ -1,0 +1,15 @@
+db:
+    driver: org.h2.Driver
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+    username: root
+    password: root
+    entitymanager:
+        packages:
+            to:
+                scan: com.andreitop.newco.dto
+    hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+hibernate:
+    hbm2ddl:
+        auto: create-drop
